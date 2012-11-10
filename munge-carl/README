@@ -1,0 +1,4 @@
+Put JSON files in data/raw, and reference them in dfm.php
+
+Output will be in data/csv.
+
