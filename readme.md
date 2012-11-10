@@ -50,13 +50,19 @@ to t2, indicate overflow periods.
 
 <!-- picture with dots -->
 
-For each of these hours, we also acquired
-the most recent observation from Weather Underground. This resulted in a table
-that looked like this.
+For each of these hours, we also acquired the most recent observation from
+Weather Underground. This resulted in a table that looked like this.
 
-    Date  Hour  Overflowing?  Last rainfall figure
-    ----  ----  ------------  --------------------
-                Yes
+    Date  Hour After 9 am  Overflowing?  Last rainfall figure
+    ----  ---- ----------  ------------  --------------------
+               No          Yes
+
+To account for the diurnal flow, we added an "after 9 am" variable, which was
+"no" for midnight to 9 am and "yes" for 10 am on.
+
+    Date  Hour After 9 am  Overflowing?  Last rainfall figure
+    ----  ---- ----------  ------------  --------------------
+               No          Yes
 
 ### Model
 We used the following model (in R formula syntax).
