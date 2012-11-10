@@ -102,7 +102,7 @@ something about whether after 9 am matters
 
 1. ~~Get throttling events: Input throttling data from Paper API~~
 2. ~~Get precipitation events: Convert Weather data from JSON to CSV~~
-3. Build algorithm to correlate throttling events with precipitation events
+3. ~~Build algorithm to correlate throttling events with precipitation events~~
 4. Refactor alert system to leverage algorithm from step 3
 5. Visualize alert data (TBD)
 
