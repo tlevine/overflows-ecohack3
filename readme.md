@@ -43,7 +43,14 @@ more relevant.
 
 ### Data collection
 We focused on the Newtown Creek sewershed. We have 480 observation-hours
-(10 storms at 14 plants) in the book. For each of these hours, we also acquired
+(10 storms at 14 plants) in the book. We measured overflow as hours between
+an NC throttle start (solid diamond) and an NC throttle end (empty diamond),
+inclusive. For example, the two darkened bands on this plot, from hours t1
+to t2, indicate overflow periods.
+
+<!-- picture with dots -->
+
+For each of these hours, we also acquired
 the most recent observation from Weather Underground. This resulted in a table
 that looked like this.
 
