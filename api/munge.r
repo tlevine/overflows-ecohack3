@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 
+library(ggplot2)
 library(plyr)
 
 o <- read.csv('overflow_dates.csv')
@@ -34,14 +35,13 @@ threshold.performance <- adply(thresholds, 1, function(threshold){
     hours = results
   )
 })
-col.names(threshold.performance)[1] <- 'threshold'
-threshold.performance$threshold <- threshold.performance$threshold/10
+colnames(threshold.performance)[1] <- 'threshold'
+threshold.performance$threshold <- thresholds
 
 png('threshold.performance.png', width = 1600, height = 900)
-p <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result)
+p <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
+print(p)
 dev.off()
-
-library(ggplot2)
 
 p0 <- ggplot(overflow) + aes(x = precipm, color = overflow) + geom_histogram() + facet_grid(after.9.am ~ .)
 
