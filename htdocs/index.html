@@ -7,9 +7,14 @@
     <link rel="stylesheet" href="style.css" type="text/css" media="all" charset="utf-8" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
         <script src="script.js" type="text/javascript" charset="utf-8"></script>
-         <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAmyDp7lZZjI3edkPRVK2YohRk2KHBNoZ1Mgd5BZUaYFpZVj4FDxT5DjxszrcAh8kpG73PMx2Iuw5Y2w"></script>
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.4&sensor=true&"></script>
-        <script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js'></script> 
+        <script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js'></script>
+
+        <!-- http://vizzuality.github.com/cartodb-gmapsv3/ -->
+        <script type="text/javascript" src="/cartodb-gmapsv3/js/wax.g.min.js"></script>
+        <script type="text/javascript" src="/cartodb-gmapsv3/dist/cartodb-gmapsv3-min.js"></script>
+
         <script type="text/javascript">
           var geocoder;
           var map;
@@ -18,7 +23,6 @@
           var found_current_location=false;
 
           function initialize() {
-            getGeoLocation();        
             geocoder = new google.maps.Geocoder();
             // default lat long
             var latlng = new google.maps.LatLng(40.713, -73.938);
@@ -28,42 +32,67 @@
               mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-            if (found_current_location){
-              queryCartoDBforCSO(current_latitude,current_longitude);
-              load_weather(current_latitude, current_longitude);
-            }
-          };
+            // Show sewer sheds.
+            queryCartoDBforSewerSheds();
 
-          function getGeoLocation() {        
-            if (google.loader.ClientLocation) {
-              current_latitude=google.loader.ClientLocation.latitude;
-              current_longitude=google.loader.ClientLocation.longitude;
-              found_current_location=true;
-            };
-            return found_current_location;
-            //latlng = new google.maps.LatLng(google.loader.ClientLocation.latitude, google.loader.ClientLocation.longitude);
-          };
+            // Try HTML5 geolocation
+            // From https://google-developers.appspot.com/maps/documentation/javascript/examples/map-geolocation
+            if(navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function(position) {
+                // If we have current position, show CSO, and weather.
+                queryCartoDBforCSO(position.coords.latitude, position.coords.longitude);
+                load_weather(position.coords.latitude, position.coords.longitude);
 
-          function load_weather(latitude, longitude) {
-            if (found_current_location) {
-
-              var url = "http://api.wunderground.com/weather/api/308f3fab4eab7071/geolookup/conditions/q/"+(latitude)+","+(longitude)+".json?callback=?";
-              //alert(url);
-
-              $.getJSON(url, {format: "json"}, function(data) {
-                //alert(":"+ data.current_observation.precip_today_in);
-                $('#rain_inches').replaceWith('<span id="rain_inches">' +  data.current_observation.precip_today_in + '</span>');
-
-                var rainInches = data.current_observation.precip_today_in;
-                var rainHourInches = data.current_observation.precip_1hr_in;
-                if (rainInches > .40 || rainHourInches > .10) {
-                  alert("Don't Flush Yet!");
-                  document.getElementById("flushAlertText").value="Don't Flush Right Now!!";  //TODO: get the specific element to change text on
-                };
+                // Center the map on the user.
+                var pos = new google.maps.LatLng(position.coords.latitude,
+                                                 position.coords.longitude);
+                map.setCenter(pos);
+              }, function() {
+                // Geolocator not working.
+                handleNoGeolocation(true);
               });
             } else {
-              alert("I'm sorry, but geolocation services are not supported by your browser or you do not have a GPS device in your computer.");
-            };  
+              // Browser doesn't support Geolocation
+              handleNoGeolocation(false);
+            }
+
+          };
+
+          function handleNoGeolocation(errorFlag) {
+            if (errorFlag) {
+              var content = 'Error: The Geolocation service failed.';
+            } else {
+              var content = 'Error: Your browser doesn\'t support geolocation.';
+            }
+            // console.log(content);
+
+            // var options = {
+            // map: map,
+            // position: new google.maps.LatLng(60, 105),
+            // content: content
+            // };
+
+            // var infowindow = new google.maps.InfoWindow(options);
+            // map.setCenter(options.position);
+          }
+
+
+          function load_weather(latitude, longitude) {
+
+            $.getJSON('/ajax/load_weather.php?callback=?', {format: "json", lat: latitude, lon: longitude}, function(data) {
+              var alert = $('#alert');
+              alert.html('There have been ' + data.current_observation.precip_today_in + ' inches of rain today in your area');
+              if (alert.is(':hidden')) {
+                alert.slideDown();
+              }
+
+              var rainInches = data.current_observation.precip_today_in;
+              var rainHourInches = data.current_observation.precip_1hr_in;
+              if (rainInches > .40 || rainHourInches > .10) {
+                alert("Don't Flush Yet!");
+                document.getElementById("flushAlertText").value="Don't Flush Right Now!!";  //TODO: get the specific element to change text on
+              };
+            });
           };
 
           function geoCodeAddress(){
@@ -74,52 +103,62 @@
               if (status == google.maps.GeocoderStatus.OK) {
                 latitude=results[0].geometry.location.lat();
                 longitude=results[0].geometry.location.lng();
+                // Show CSO
                 queryCartoDBforCSO(latitude,longitude);
-                load_weather(latitude, longitude);  
+                load_weather(latitude, longitude);
               } else {
                 alert("Geocode was not successful for the following reason: " + status);
               }
             });
            };
 
-          function queryCartoDBforCSO(latitude, longitude){
-            query="SELECT DISTINCT(sheds.drainage_n), ST_AsGeoJSON(pol.the_geom) as polygon, ST_AsGeoJSON(poin.the_geom) as point_geom FROM drain_areas_wgs84webmerc_nodupou as pol inner join cso_nyc_wgs84webmerc_latlon as poin on poin.item_id=pol.primary_ou, drainage_nyc_sewage_plant_sheds as sheds WHERE ST_Intersects(pol.the_geom,ST_GeomFromText('POINT(" + longitude + " " + latitude + ")',4326)) AND (sheds.wpcp=poin.wpcp OR sheds.alt_name=poin.wpcp)";
-            req='http://ecohack-nyc-03.cartodb.com/api/v1/sql?callback=?&q=' + escape(query);
-            //$('#query').replaceWith('<div id="query">' + req + '</div>');
-            $.getJSON(req, function(data) {
+           // drainage_nyc_sewage_plant_sheds
+           //   Sewage plant sheds
+           // drain_areas_wgs84webmerc
+           // drain_areas_wgs84webmerc_nodupou
+           //   CSO shed data -- one of which is duplicate
+           // cso_nyc_wgs84webmerc_latlon
+           //   Pipe locations per CSO shed
 
-              options = { "strokeColor": "#FF7800","strokeOpacity": 1,"strokeWeight": 2,
-                    "fillColor": "#46461F","fillOpacity": 0.25 , 
-                    "icon" : 'http://dontflush.me/icons/csoIcon.png'};         
+          function queryCartoDBforCSO(latitude, longitude) {
+            // Add CSO layer.
+            var cartodb2_gmapsv3 = new CartoDBLayer({
+              map: map,
+              user_name:'ecohack-nyc-03',
+              table_name: 'drain_areas_wgs84webmerc',
+              query: "SELECT polygons.the_geom_webmercator FROM drain_areas_wgs84webmerc AS polygons WHERE ST_Intersects(polygons.the_geom,ST_GeomFromText('POINT(" + longitude + " " + latitude + ")',4326))",
+              auto_bound: false,
+              debug: true
+            });
 
-              if (data['rows'][0]) {
+            // Add points.
+            var cartodb3_gmapsv3 = new CartoDBLayer({
+              map: map,
+              user_name:'ecohack-nyc-03',
+              table_name: 'cso_nyc_wgs84webmerc_latlon',
+              query: "SELECT points.the_geom_webmercator FROM drain_areas_wgs84webmerc as polygons INNER JOIN cso_nyc_wgs84webmerc_latlon as points ON points.item_id=polygons.primary_ou, drainage_nyc_sewage_plant_sheds as sheds WHERE ST_Intersects(polygons.the_geom,ST_GeomFromText('POINT(" + longitude + " " + latitude + ")',4326)) AND (sheds.wpcp=points.wpcp OR sheds.alt_name=points.wpcp)",
+              auto_bound: false,
+              debug: false
+            });
 
-                eval("geoparsed="+data['rows'][0]['point_geom']);
-                var myCSO = new GeoJSON(geoparsed, options);
-                if (myCSO.error){
-                    alert('something broke');
-                }else{
-                    myCSO.setMap(map);
-                };
+            var mylatlong= new google.maps.LatLng(latitude, longitude);
+            var marker = new google.maps.Marker({
+                 map: map,
+                 position: mylatlong
+             });
 
-                eval("geoparsed="+data['rows'][0]['polygon']);
-                var myGoogleVector = new GeoJSON(geoparsed, options);
-                if (myGoogleVector.error){
-                    alert('something broke');
-                }else{
-                   mylatlong=new google.maps.LatLng(latitude,longitude);
-                   marker = new google.maps.Marker({
-                        map: map,
-                        position: mylatlong
-                    });
-                    myGoogleVector[0].setMap(map);
-                    map.setCenter(mylatlong);
-                    map.setZoom(14);
-                };
+          };
 
-              } else {
-                alert('your address is not in our database');
-              };
+          // Show sewer sheds.
+          function queryCartoDBforSewerSheds(){
+            var cartodb1_gmapsv3 = new CartoDBLayer({
+              map: map,
+              user_name:'ecohack-nyc-03',
+              table_name: 'drainage_nyc_sewage_plant_sheds',
+              query: "SELECT sheds.drainage_n, the_geom_webmercator FROM drainage_nyc_sewage_plant_sheds as sheds",
+              layer_order: "bottom",
+              auto_bound: false,
+              debug: false
             });
           };
 
@@ -317,8 +356,13 @@
   })();
 
 </script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+  google.load("maps", "3.x", {other_params: "sensor=false", callback:initialize});
+});
+</script>
       </head>
-      <body onload="initialize()" class="one-sidebar sidebar-first ltr">
+      <body class="one-sidebar sidebar-first ltr">
       <div class="container-full clearfix">
       <div class="header clearfix">
         <h1>DontFlush.Me</h1>
@@ -394,12 +438,10 @@
 
       </div></div>
       <div class="main">
-        <div class="alert">
-        There have been <span id="rain_inches"></span> inches of rain today in your area.
-        </div>
+        <div id="alert" class="init-hide"></div>
         <div id="map_canvas" style="width: 644px; height: 495px; display:inline-block;"></div>
       </div>
-      
+
     </div>
     <div class="footer clearfix">
       Thanks to Matt, Eric, Jeni, Liz, Jeff, Chris, Sheiva, Anna, Karen, Wendy and Carl For making this site happen! Thanks to Javier at <a href="http://vizzuality.com/">Vizzuality</a> for making CartoDB available! Copyright &copy; 2011

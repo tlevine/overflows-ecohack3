@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
   border-top-color: #F44;
   border-bottom-color: #600;
   margin-bottom: 1.5em;
-  
+
 }
 
 .gray {
@@ -107,7 +107,7 @@ p {
   padding: 1.286em;
 }
 
-.alert {
+#alert {
   background-color: #E11E28;
   color: #FFF;
   padding: 1.286em;
@@ -153,4 +153,8 @@ p {
   font-size: 1em;
   padding: .2em .5em;
   line-height: 1.4em;
+}
+
+.init-hide {
+  display: none;
 }
