@@ -1,7 +1,11 @@
 Using recent rainfall figures to predict Newtown Creek sewer overflows
 ===
 
-<!-- @todo introduction -->
+## Goal
+We want to predict whether a sewer will overflow soon based on current
+rainfall data in order to make [DontFlush.me](http://dontflush.me)'s alerts
+more relevant.
+
 
 ## Data sources
 
@@ -34,10 +38,6 @@ hour.
 We collected rainfall statistics from Weather Underground. We chose this
 because of the [practical applications blah blah]
 
-### Goal
-We want to predict whether a sewer will overflow soon based on current
-rainfall data in order to make [DontFlush.me](http://dontflush.me)'s alerts
-more relevant.
 
 ## Methods
 
@@ -72,6 +72,7 @@ To account for the diurnal flow, we added an "after 9 am" variable, which was
 We used the following model (in R formula syntax).
 
     overflowing ~ Last rainfall figure + hour of the day
+
 
 ## Remaining tasks
 
