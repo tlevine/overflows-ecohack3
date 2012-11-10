@@ -7,13 +7,36 @@ o$start_date <- NULL
 o$after.9.am <- as.numeric(strftime(o$datetime, '%H')) > 9
 o$overflow <- o$overflow == 'yes'
 
-library(plyr)
-library(ggplot2)
 
 precip <- read.csv('../munge-tom/precip.csv')
 overflow <- join(o, precip)
 
-summary(glm(overflow ~ after.9.am + precipm, data = overflow, family = binomial))
+model <- glm(overflow ~ after.9.am + precipm, data = overflow, family = binomial)
+summary(model)
+
+
+library(plyr)
+
+
+# What's a good threshold?
+table(overflow$precipi > 0.2, overflow$overflow, dnn = c('Precip over threshold', 'Sewer overflow'))
+
+thresholds <- (1:100)/10
+threshold.performance <- adply(thresholds, 1, function(threshold){
+  data.frame(
+    correctly_report = nrow(subset(overflow, precipm > threshold & overflow)),
+    correctly_avoid_reporting = nrow(subset(overflow, precipm <= threshold & !overflow)),
+    accidental_report = nrow(subset(overflow, precipm > threshold & !overflow)),
+    missed_report = nrow(subset(overflow, precipm <= threshold & overflow))
+  )
+})
+threshold.performance$X1 <- NULL
+rownames(threshold.performance) <- thresholds
+
+#png('threshold.performance.png', width = 1600, height = 900)
+#plot(threshold.performance,
+
+library(ggplot2)
 
 p0 <- ggplot(overflow) + aes(x = precipm, color = overflow) + geom_histogram() + facet_grid(after.9.am ~ .)
 
