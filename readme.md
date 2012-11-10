@@ -3,7 +3,9 @@ Using recent rainfall figures to predict Newtown Creek sewer overflows
 
 <!-- introduction -->
 
-## Data source
+## Data sources
+
+### Overflow statistic
 We received a book from a FOIA request. This book contains graphs of, among
 other things, sewer overflow incidents in New York City during the top 10
 storms of 2011 for each of the 14 sewage treatment plants.
@@ -22,9 +24,36 @@ storms of 2011 for each of the 14 sewage treatment plants.
 > 12/7/2011
 
 For each of these 10 storms, the graphs present a 48-hour or 60-hour window
-of data around the storm. This results in a total of 7720 observation-hours,
-with one observation per hour.
+of data around the storm. For 60-hour widows, we only used the first 48-hours.
+This results in a total of 7720 observation-hours, with one observation per
+hour.
 
 <!-- picture of the book and a plot from it -->
 
+### Rainfall statistic
+We collected rainfall statistics from Weather Underground. We chose this
+because of the [practical applications blah blah]
+
+### Goal
+We want to predict whether a sewer will overflow soon based on current
+rainfall data in order to make [DontFlush.me](http://dontflush.me)'s alerts
+more relevant.
+
 ## Methods
+
+### Data collection
+We focused on the Newtown Creek sewershed. We have 480 observation-hours
+(10 storms at 14 plants) in the book. For each of these hours, we also acquired
+the most recent observation from Weather Underground. This resulted in a table
+that looked like this.
+
+    Date  Hour  Overflowing?  Last rainfall figure
+    ----  ----  ------------  --------------------
+                Yes
+
+### Model
+We used the following model (in R formula syntax).
+
+    overflowing ~ Last rainfall figure + hour of the day
+
+
