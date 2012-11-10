@@ -50,6 +50,10 @@ to t2, indicate overflow periods.
 
 <!-- picture with dots -->
 
+The MPS throttle start (solid circle) and end (empty circle) apparently
+indicates overflows coming from the Manhattan pump station, which gets sent
+through the Newtown Creek station. We ignored these overflows.
+
 For each of these hours, we also acquired the most recent observation from
 Weather Underground. This resulted in a table that looked like this.
 
@@ -69,11 +73,10 @@ We used the following model (in R formula syntax).
 
     overflowing ~ Last rainfall figure + hour of the day
 
-People Working on this project:
-Tom - understanding the stats and data entry
-Carl - visualization of weather data
-Casey - data entry and calculations
-Mike - data visualzation and structure in tableau
-Leif - gathering weather data and data entry
 
-
+## People Working on this project
+* Tom: understanding the stats and data entry
+* Carl: visualization of weather data
+* Casey: data entry and calculations
+* Mike: data visualzation and structure in tableau
+* Leif: gathering weather data and data entry  
