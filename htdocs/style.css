@@ -107,7 +107,7 @@ p {
   padding: 1.286em;
 }
 
-.alert {
+#alert {
   background-color: #E11E28;
   color: #FFF;
   padding: 1.286em;
@@ -153,4 +153,8 @@ p {
   font-size: 1em;
   padding: .2em .5em;
   line-height: 1.4em;
+}
+
+.init-hide {
+  display: none;
 }
