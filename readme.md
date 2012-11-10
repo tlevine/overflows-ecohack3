@@ -71,7 +71,31 @@ To account for the diurnal flow, we added an "after 9 am" variable, which was
 ### Model
 We used the following model (in R formula syntax).
 
-    overflowing ~ Last rainfall figure + hour of the day
+    overflowing ~ Last rainfall figure + after 9 am
+
+We also made some plot
+
+blah blah
+
+
+Figure out
+* that weird spike of falses
+* 100 records lost in the join
+* what family of distribution should the rainfall follow theoretically
+
+Add the pictures.
+Verify the paper API data by connecting frank's, tom's and casey's.
+
+## Conclusions
+2 mm is a decent cut-off for the guess
+
+something about whether after 9 am matters
+
+
+
+
+
+
 
 
 ## Remaining tasks
