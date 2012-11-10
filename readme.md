@@ -1,7 +1,11 @@
 Using recent rainfall figures to predict Newtown Creek sewer overflows
 ===
 
-<!-- introduction -->
+## Goal
+We want to predict whether a sewer will overflow soon based on current
+rainfall data in order to make [DontFlush.me](http://dontflush.me)'s alerts
+more relevant.
+
 
 ## Data sources
 
@@ -12,32 +16,28 @@ storms of 2011 for each of the 14 sewage treatment plants.
 
 > Dates of the top ten storms, in the order they are presented in the book
 > 
-> 8/14/2011
-> 8/27/2011
-> 9/6/2011
-> 3/6/2011
-> 4/16/2011
-> 11/22/2011
-> 10/29/2011
-> 9/23/2011
-> 5/17/2011
-> 12/7/2011
+> * 8/14/2011
+> * 8/27/2011
+> * 9/6/2011
+> * 3/6/2011
+> * 4/16/2011
+> * 11/22/2011
+> * 10/29/2011
+> * 9/23/2011
+> * 5/17/2011
+> * 12/7/2011
 
 For each of these 10 storms, the graphs present a 48-hour or 60-hour window
 of data around the storm. For 60-hour widows, we only used the first 48-hours.
 This results in a total of 7720 observation-hours, with one observation per
 hour.
 
-<!-- picture of the book and a plot from it -->
+<!-- @todo picture of the book and a plot from it -->
 
 ### Rainfall statistic
 We collected rainfall statistics from Weather Underground. We chose this
 because of the [practical applications blah blah]
 
-### Goal
-We want to predict whether a sewer will overflow soon based on current
-rainfall data in order to make [DontFlush.me](http://dontflush.me)'s alerts
-more relevant.
 
 ## Methods
 
@@ -74,9 +74,18 @@ We used the following model (in R formula syntax).
     overflowing ~ Last rainfall figure + hour of the day
 
 
-## People Working on this project
-* Tom: understanding the stats and data entry
-* Carl: visualization of weather data
-* Casey: data entry and calculations
+## Remaining tasks
+
+1. ~~Get throttling events: Input throttling data from Paper API~~
+2. ~~Get precipitation events: Convert Weather data from JSON to CSV~~
+3. Build algorithm to correlate throttling events with precipitation events
+4. Refactor alert system to leverage algorithm from step 3
+5. Visualize alert data (TBD)
+
+## Contributors
+* Leif: gathering weather data and data entry (lpercifield)
+* Tom: understanding the stats and data entry (tlevine)
+* Carl: visualization of weather data (c4rl)
+* Casey: data entry and calculations (caseytwebb)
 * Mike: data visualzation and structure in tableau
-* Leif: gathering weather data and data entry  
+* Frank: Excel expert

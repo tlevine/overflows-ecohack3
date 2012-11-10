@@ -1,0 +1,156 @@
+body {
+/*  background-image: url(dfm-bw.jpg);*/
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 62.5%; /*10px*/
+}
+
+body.front {
+/*  background-image: url(dfm.jpg);*/
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+.red {
+  background-color: #E11E28;
+  color: #FFF;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #FF1E28;
+  border-top-color: #F44;
+  border-bottom-color: #600;
+  margin-bottom: 1.5em;
+  
+}
+
+.gray {
+  background-color: #CCC;
+  color: #333;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #999;
+  border-top-color: #eee;
+  border-bottom-color: #333;
+  height: 80px;
+}
+
+h1 {
+  font-size: 2em; /*28px*/
+  line-height: 1em; /*28px*/
+  text-shadow: #CCC 0px 2px 0;
+}
+
+h2 {
+  font-size: 1.142em; /*16px*/
+  line-height: 1.125em; /*18px*/
+  margin-bottom: .5625em; /*9px*/
+  text-shadow: #CCC 0px 1px 0;
+}
+
+p {
+  margin-bottom: 1.5em;
+  text-shadow: #CCC 0px 1px 0;
+}
+
+.red p {
+  text-shadow: #533 0px 1px 0;
+}
+
+.container-full {
+  font-size: 1.4em; /*14px*/
+  line-height: 1.285em; /*18px*/
+  padding-top: 1.285em;
+}
+
+.container-full {
+  margin: auto;
+  width: 960px;
+}
+
+.one-sidebar .sidebar-first {
+  width: 33%;
+  float: left;
+  margin-right: -33%;
+}
+
+.one-sidebar .main {
+  float: left;
+  margin-left: 33%;
+  width: 67%;
+  margin-right: -100%;
+}
+
+.header {
+  border-bottom: 2px solid #E11E28;
+  margin-bottom: 1.333em;
+}
+
+.header {
+  padding: 1.286em;
+}
+
+.footer {
+  text-align: center;
+  padding: 4em;
+  color: #333;
+}
+
+.sidebar-first .container {
+  -webkit-border-radius: .667em;
+  -moz-border-radius: .667em;
+  border-radius: .667em;
+  padding: 1.286em;
+}
+
+.alert {
+  background-color: #E11E28;
+  color: #FFF;
+  padding: 1.286em;
+  border: 5px solid #FF1E28;
+  font-size: 1.143em;
+  text-align: center;
+}
+
+.sidebar-first .container,
+.sidebar-second .container {
+  /*margin-bottom: 1.5em;*/
+}
+
+.sidebar-first .headed {
+  padding-top: 2em;
+}
+
+.ltr .sidebar-first .sidebar-inner {
+  margin-right: 1.5em;
+}
+
+.tip-heading {
+  color: #E11E28;
+  text-transform: uppercase;
+}
+
+.text {
+  border: 2px solid #f00;
+  font-size: 1em;
+  padding: 2px;
+  color: #666;
+  width: 180px;
+}
+
+.submit {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #999;
+  border: 0;
+  color: #FFF;
+  -webkit-border-radius: .5em;
+  -moz-border-radius: .5em;
+  border-radius: .5em;
+  font-size: 1em;
+  padding: .2em .5em;
+  line-height: 1.4em;
+}
