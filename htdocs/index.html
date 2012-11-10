@@ -9,7 +9,7 @@
         <script src="script.js" type="text/javascript" charset="utf-8"></script>
          <script type="text/javascript" src="https://www.google.com/jsapi?key=ABQIAAAAmyDp7lZZjI3edkPRVK2YohRk2KHBNoZ1Mgd5BZUaYFpZVj4FDxT5DjxszrcAh8kpG73PMx2Iuw5Y2w"></script>
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.4&sensor=true&"></script>
-        <script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js'></script> 
+        <script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js'></script>
         <script type="text/javascript">
           var geocoder;
           var map;
@@ -18,7 +18,7 @@
           var found_current_location=false;
 
           function initialize() {
-            getGeoLocation();        
+            getGeoLocation();
             geocoder = new google.maps.Geocoder();
             // default lat long
             var latlng = new google.maps.LatLng(40.713, -73.938);
@@ -34,7 +34,7 @@
             }
           };
 
-          function getGeoLocation() {        
+          function getGeoLocation() {
             if (google.loader.ClientLocation) {
               current_latitude=google.loader.ClientLocation.latitude;
               current_longitude=google.loader.ClientLocation.longitude;
@@ -63,7 +63,7 @@
               });
             } else {
               alert("I'm sorry, but geolocation services are not supported by your browser or you do not have a GPS device in your computer.");
-            };  
+            };
           };
 
           function geoCodeAddress(){
@@ -75,7 +75,7 @@
                 latitude=results[0].geometry.location.lat();
                 longitude=results[0].geometry.location.lng();
                 queryCartoDBforCSO(latitude,longitude);
-                load_weather(latitude, longitude);  
+                load_weather(latitude, longitude);
               } else {
                 alert("Geocode was not successful for the following reason: " + status);
               }
@@ -89,8 +89,8 @@
             $.getJSON(req, function(data) {
 
               options = { "strokeColor": "#FF7800","strokeOpacity": 1,"strokeWeight": 2,
-                    "fillColor": "#46461F","fillOpacity": 0.25 , 
-                    "icon" : 'http://dontflush.me/icons/csoIcon.png'};         
+                    "fillColor": "#46461F","fillOpacity": 0.25 ,
+                    "icon" : 'http://dontflush.me/icons/csoIcon.png'};
 
               if (data['rows'][0]) {
 
@@ -399,7 +399,7 @@
         </div>
         <div id="map_canvas" style="width: 644px; height: 495px; display:inline-block;"></div>
       </div>
-      
+
     </div>
     <div class="footer clearfix">
       Thanks to Matt, Eric, Jeni, Liz, Jeff, Chris, Sheiva, Anna, Karen, Wendy and Carl For making this site happen! Thanks to Javier at <a href="http://vizzuality.com/">Vizzuality</a> for making CartoDB available! Copyright &copy; 2011
