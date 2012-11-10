@@ -69,4 +69,11 @@ We used the following model (in R formula syntax).
 
     overflowing ~ Last rainfall figure + hour of the day
 
+People Working on this project:
+Tom - understanding the stats and data entry
+Carl - visualization of weather data
+Casey - data entry and calculations
+Mike - data visualzation and structure in tableau
+Leif - gathering weather data and data entry
+
 
