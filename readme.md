@@ -87,7 +87,7 @@ Add the pictures.
 Verify the paper API data by connecting frank's, tom's and casey's.
 
 ## Conclusions
-2 mm is a decent cut-off for the guess
+2 mm is a decent cut-off for the guess (http://chainsaw.thomaslevine.com/threshold.png)
 
 something about whether after 9 am matters
 
