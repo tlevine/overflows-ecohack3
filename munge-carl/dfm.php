@@ -72,6 +72,7 @@ foreach ($files as $file) {
   $local = $local_read_path . '/' . $file;
   // Grab files from remote location if they don't currently exist.
   if (!file_exists($local)) {
+    // @todo This is sloppy, refactor.
     $command = "wget " . $remote_path . '/'. $file . " -O " . $local;
     system($command);
   }
