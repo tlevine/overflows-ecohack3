@@ -22,6 +22,20 @@ def simplify_observation(observation):
 		'precipm': observation['precipm'],
 	}
 
-import sys
-dt = DumpTruck(dbname = 'precip.db')	
-foo(sys.argv[1], dt)
+def hourly(dt):
+    thedate = datetime.datetime(2011, 1, 1)
+    for hour in range(356 * 24):
+        thedate = thedate + datetime.timedelta(hours=1)
+        stringdate = thedate.strftime('%Y-%m-%d %H')
+        rowlist = dt.execute("select precipm, precipi from precip where precipi >= 0 and datetime < '%s' order by datetime desc limit 1;" % stringdate)
+        if len(rowlist) == 0:
+            continue
+
+        row = rowlist[0]
+        row['datetime'] = thedate
+        dt.insert(row, 'hourly')
+
+if __name__ == '__main__':
+    import sys
+    dt = DumpTruck(dbname = 'precip.db')	
+    foo(sys.argv[1], dt)

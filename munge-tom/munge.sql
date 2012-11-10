@@ -1,3 +1,3 @@
 .header on
 .mode csv
-select * from precip where precipi >= 0;
+select * from hourly where precipi >= 0;
