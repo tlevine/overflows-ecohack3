@@ -83,9 +83,9 @@ We used the following model (in R formula syntax).
 5. Visualize alert data (TBD)
 
 ## Contributors
-* Leif: gathering weather data and data entry (lpercifield)
-* Tom: understanding the stats and data entry (tlevine)
-* Carl: visualization of weather data (c4rl)
-* Casey: data entry and calculations (caseytwebb)
-* Mike: data visualzation and structure in tableau
+* Leif: gathering weather data and data entry (http://github.com/lpercifield)
+* Tom: understanding the stats and data entry (http://github.com/tlevine)
+* Carl: visualization of weather data (http://github.com/c4rl)
+* Casey: data entry and calculations (http://github.com/caseytwebb)
+* Mike: data visualzation and structure in tableau (http://github.com/acceleratormt)
 * Frank: Excel expert
