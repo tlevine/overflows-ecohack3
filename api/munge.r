@@ -8,6 +8,7 @@ o$after.9.am <- as.numeric(strftime(o$datetime, '%H')) > 9
 o$overflow <- o$overflow == 'yes'
 
 library(plyr)
+library(ggplot2)
 
 precip <- read.csv('../munge-tom/precip.csv')
 overflow <- join(o, precip)
@@ -26,7 +27,3 @@ p2 <- ggplot(subset(overflow, !after.9.am)) +
 p3 <- ggplot(overflow) + aes(x = precipm, fill = overflow) +
   geom_dotplot(binwidth = 1, stackgroups = T, binpositions = 'all')
 
-#print(p1)
-#print(p2)
-#print(p)
-print(p3)
