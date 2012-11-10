@@ -1,5 +1,7 @@
 #!/usr/bin/env Rscript
 
+library(plyr)
+
 o <- read.csv('overflow_dates.csv')
 o$datetime <- strptime(o$start_date, format = '%m/%d/%Y') + 3600 * o$hour
 o$hour <- NULL
@@ -15,26 +17,29 @@ model <- glm(overflow ~ after.9.am + precipm, data = overflow, family = binomial
 summary(model)
 
 
-library(plyr)
-
 
 # What's a good threshold?
 table(overflow$precipi > 0.2, overflow$overflow, dnn = c('Precip over threshold', 'Sewer overflow'))
 
 thresholds <- (1:100)/10
 threshold.performance <- adply(thresholds, 1, function(threshold){
-  data.frame(
+  results <- c(
     correctly_report = nrow(subset(overflow, precipm > threshold & overflow)),
     correctly_avoid_reporting = nrow(subset(overflow, precipm <= threshold & !overflow)),
     accidental_report = nrow(subset(overflow, precipm > threshold & !overflow)),
     missed_report = nrow(subset(overflow, precipm <= threshold & overflow))
   )
+  data.frame(
+    result = names(results),
+    hours = results
+  )
 })
-threshold.performance$X1 <- NULL
-rownames(threshold.performance) <- thresholds
+col.names(threshold.performance)[1] <- 'threshold'
+threshold.performance$threshold <- threshold.performance$threshold/10
 
-#png('threshold.performance.png', width = 1600, height = 900)
-#plot(threshold.performance,
+png('threshold.performance.png', width = 1600, height = 900)
+p <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result)
+dev.off()
 
 library(ggplot2)
 
