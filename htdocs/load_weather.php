@@ -12,11 +12,9 @@ if (isset($lat) && isset($lon)) {
 
   // These might need to change.
   header('Cache-control:no-cache, must-revalidate, no-cache="Set-Cookie", private');
-  header('Connection:close');
   header('Content-Type:application/json; charset=UTF-8');
-  header('Expires:Fri, 01 Jan 1990 00:00:00 GMT');
-  header('Pragma:no-cache');
   header('Access-Control-Allow-Origin: http://dontflush.me');
+  header('Access-Control-Allow-Methods: GET');
 
   echo file_get_contents($url);
 }
