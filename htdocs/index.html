@@ -79,8 +79,9 @@
 
           function load_weather(latitude, longitude) {
 
-            $.getJSON('ajax/load_weather.php?callback=?', {format: "json", lat: latitude, lon: longitude}, function(data) {
+            $.getJSON('load_weather.php?callback=?', {format: "json", lat: latitude, lon: longitude}, function(data) {
               var alert = $('#alert');
+              console.log(data);
               alert.html('There have been ' + data.current_observation.precip_today_in + ' inches of rain today in your area');
               if (alert.is(':hidden')) {
                 alert.slideDown();
