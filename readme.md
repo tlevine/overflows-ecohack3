@@ -125,3 +125,4 @@ in the head and foot, and move the files in `tmp` to the repository root.
     git checkout gh-pages
     mv tmp/*.png tmp/*.jpg .
     cat template/index.html.head tmp/index.html template/index.html.foot > index.html
+    git commit .
