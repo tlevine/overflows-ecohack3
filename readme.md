@@ -117,10 +117,11 @@ something about whether after 9 am matters
 * Frank: Excel expert
 
 ## Building the website
-Run `./build.sh`, then check out the `gh-pages` branch and move the files in
-`tmp` to the repository root.
+Run `./build.sh`, then check out the `gh-pages` branch, wrap the `index.html`
+in the head and foot, and move the files in `tmp` to the repository root.
 
     git checkout master
     ./build.sh
     git checkout gh-pages
-    mv tmp/* .
+    mv tmp/*.png tmp/*.jpg .
+    cat template/index.html.head tmp/index.html template/index.html.foot > index.html
