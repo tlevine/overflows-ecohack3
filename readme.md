@@ -115,3 +115,12 @@ something about whether after 9 am matters
 * Casey: data entry and calculations (http://github.com/caseytwebb)
 * Mike: data visualzation and structure in tableau (http://github.com/acceleratormt)
 * Frank: Excel expert
+
+## Building the website
+Run `./build.sh`, then check out the `gh-pages` branch and move the files in
+`tmp` to the repository root.
+
+    git checkout master
+    ./build.sh
+    git checkout gh-pages
+    mv tmp/* .
