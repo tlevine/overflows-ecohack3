@@ -89,7 +89,7 @@ Verify the paper API data by connecting frank's, tom's and casey's.
 ## Conclusions
 2 mm is a decent cut-off for the guess
 
-![This is a plot of stacked dots with one dot per observation hour, precipitation rate on the x axis and number of occurrences on the y-axis. It indicates that overflows mainly occur when precipitation rate is above 2 mm per hour.](threshold.identification.png)
+![This is a plot of stacked dots with one dot per observation hour, precipitation rate on the x axis and number of occurrences on the y-axis. It indicates that overflows mainly occur when precipitation rate is above 2 mm per hour.](threshold.identification-custom.png)
 
 something about whether after 9 am matters
 
