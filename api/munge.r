@@ -38,11 +38,6 @@ threshold.performance <- adply(thresholds, 1, function(threshold){
 colnames(threshold.performance)[1] <- 'threshold'
 threshold.performance$threshold <- thresholds
 
-png('../figures/threshold.performance.png', width = 1600, height = 900)
-p <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
-print(p)
-dev.off()
-
 p0 <- ggplot(overflow) + aes(x = precipm, color = overflow) + geom_histogram() + facet_grid(after.9.am ~ .)
 
 p1 <- ggplot(subset(overflow, after.9.am)) +
@@ -55,3 +50,13 @@ p2 <- ggplot(subset(overflow, !after.9.am)) +
 p3 <- ggplot(overflow) + aes(x = precipm, fill = overflow) +
   geom_dotplot(binwidth = 1, stackgroups = T, binpositions = 'all')
 
+p4 <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
+
+
+png('../figures/threshold.identification.png', width = 1600, height = 900)
+print(p3)
+dev.off()
+
+png('../figures/threshold.performance.png', width = 1600, height = 900)
+print(p4)
+dev.off()
