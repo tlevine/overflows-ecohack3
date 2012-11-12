@@ -53,6 +53,10 @@ p3 <- ggplot(overflow) + aes(x = precipm, fill = overflow) +
 p4 <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
 
 
+pdf('../figures/threshold.identification.pdf', width = 16, height = 9)
+print(p3)
+dev.off()
+
 png('../figures/threshold.identification.png', width = 1600, height = 900)
 print(p3)
 dev.off()
