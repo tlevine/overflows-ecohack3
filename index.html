@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Overflows-ecohack3 by tlevine</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Overflows-ecohack3</h1>
+        <p></p>
+
+        <p class="view"><a href="https://github.com/tlevine/overflows-ecohack3">View the Project on GitHub <small>tlevine/overflows-ecohack3</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/tlevine/overflows-ecohack3/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/tlevine/overflows-ecohack3/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/tlevine/overflows-ecohack3">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Using recent rainfall figures to predict Newtown Creek sewer overflows</h1>
+
+<h2>Goal</h2>
+
+<p>We want to predict whether a sewer will overflow soon based on current
+rainfall data in order to make <a href="http://dontflush.me">DontFlush.me</a>'s alerts
+more relevant.</p>
+
+<h2>Data sources</h2>
+
+<h3>Overflow statistic</h3>
+
+<p>We received a book from a FOIA request. This book contains graphs of, among
+other things, sewer overflow incidents in New York City during the top 10
+storms of 2011 for each of the 14 sewage treatment plants.</p>
+
+<blockquote>
+<p>Dates of the top ten storms, in the order they are presented in the book</p>
+
+<ul>
+<li>8/14/2011</li>
+<li>8/27/2011</li>
+<li>9/6/2011</li>
+<li>3/6/2011</li>
+<li>4/16/2011</li>
+<li>11/22/2011</li>
+<li>10/29/2011</li>
+<li>9/23/2011</li>
+<li>5/17/2011</li>
+<li>12/7/2011</li>
+</ul>
+</blockquote>
+
+<p>For each of these 10 storms, the graphs present a 48-hour or 60-hour window
+of data around the storm. For 60-hour widows, we only used the first 48-hours.
+This results in a total of 7720 observation-hours, with one observation per
+hour.</p>
+
+<p><img src="2012-12-07.jpg" alt="Sewer activity plot from December 7, 2012"></p>
+
+<h3>Rainfall statistic</h3>
+
+<p>We collected rainfall statistics from Weather Underground. We chose this
+because of the [practical applications blah blah]</p>
+
+<h2>Methods</h2>
+
+<h3>Data collection</h3>
+
+<p>We focused on the Newtown Creek sewershed. We have 480 observation-hours
+(10 storms at 14 plants) in the book. We measured overflow as hours between
+an NC throttle start (solid diamond) and an NC throttle end (empty diamond),
+inclusive. For example, the two darkened bands on this plot, from hours t1
+to t2, indicate overflow periods.</p>
+
+<p><img src="2012-12-07-annotated.jpg" alt="Sewer activity plot from December 7, 2012 with shaded regions representing overflow periods as explained in the above paragraph"></p>
+
+<p>The MPS throttle start (solid circle) and end (empty circle) apparently
+indicates overflows coming from the Manhattan pump station, which gets sent
+through the Newtown Creek station. We ignored these overflows.</p>
+
+<p>For each of these hours, we also acquired the most recent observation from
+Weather Underground. This resulted in a table that looked like this.</p>
+
+<pre><code>Date  Hour After 9 am  Overflowing?  Last rainfall figure
+----  ---- ----------  ------------  --------------------
+           No          Yes
+</code></pre>
+
+<p>To account for the diurnal flow, we added an "after 9 am" variable, which was
+"no" for midnight to 9 am and "yes" for 10 am on.</p>
+
+<pre><code>Date  Hour After 9 am  Overflowing?  Last rainfall figure
+----  ---- ----------  ------------  --------------------
+           No          Yes
+</code></pre>
+
+<h3>Model</h3>
+
+<p>We used the following model (in R formula syntax).</p>
+
+<pre><code>overflowing ~ Last rainfall figure + after 9 am
+</code></pre>
+
+<p>We also made some plot</p>
+
+<p>blah blah</p>
+
+<p>Figure out</p>
+
+<ul>
+<li>that weird spike of falses</li>
+<li>100 records lost in the join</li>
+<li>what family of distribution should the rainfall follow theoretically</li>
+</ul><p>Add the pictures.
+Verify the paper API data by connecting frank's, tom's and casey's.</p>
+
+<h2>Conclusions</h2>
+
+<p>2 mm is a decent cut-off for the guess (<a href="http://chainsaw.thomaslevine.com/threshold.png">http://chainsaw.thomaslevine.com/threshold.png</a>)</p>
+
+<p>something about whether after 9 am matters</p>
+
+<h2>Remaining tasks</h2>
+
+<ol>
+<li><del>Get throttling events: Input throttling data from Paper API</del></li>
+<li><del>Get precipitation events: Convert Weather data from JSON to CSV</del></li>
+<li><del>Build algorithm to correlate throttling events with precipitation events</del></li>
+<li>Refactor alert system to leverage algorithm from step 3</li>
+<li>Visualize alert data (TBD)</li>
+</ol><h2>Contributors</h2>
+
+<ul>
+<li>Leif: gathering weather data and data entry (<a href="http://github.com/lpercifield">http://github.com/lpercifield</a>)</li>
+<li>Tom: understanding the stats and data entry (<a href="http://github.com/tlevine">http://github.com/tlevine</a>)</li>
+<li>Carl: visualization of weather data (<a href="http://github.com/c4rl">http://github.com/c4rl</a>)</li>
+<li>Casey: data entry and calculations (<a href="http://github.com/caseytwebb">http://github.com/caseytwebb</a>)</li>
+<li>Mike: data visualzation and structure in tableau (<a href="http://github.com/acceleratormt">http://github.com/acceleratormt</a>)</li>
+<li>Frank: Excel expert</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/tlevine">tlevine</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
