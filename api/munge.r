@@ -38,7 +38,7 @@ threshold.performance <- adply(thresholds, 1, function(threshold){
 colnames(threshold.performance)[1] <- 'threshold'
 threshold.performance$threshold <- thresholds
 
-png('threshold.performance.png', width = 1600, height = 900)
+png('../figures/threshold.performance.png', width = 1600, height = 900)
 p <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
 print(p)
 dev.off()
