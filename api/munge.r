@@ -14,9 +14,9 @@ o$overflow <- o$overflow == 'yes'
 precip <- read.csv('../munge-tom/precip.csv')
 overflow <- join(o, precip)
 
-model <- glm(overflow ~ after.9.am + precipm, data = overflow, family = binomial)
+model <- glm(overflow ~ after.9.am * precipm, data = overflow, family = binomial)
 summary(model)
-
+print('This model suggests that overflows only only occur after 9 am.')
 
 
 # What's a good threshold?
@@ -52,8 +52,11 @@ p3 <- ggplot(overflow) + aes(x = precipm, fill = overflow) +
 
 p4 <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
 
+p5 <- ggplot(subset(overflow, after.9.am)) + aes(x = precipm, fill = overflow) +
+  geom_dotplot(binwidth = 1, stackgroups = T, binpositions = 'all')
+
 # Change '0' to something else based on that other model I ran
-threshold.performance$precipm.adj <- threshold.performance$precipm + 0 * threshold.performance$after.9.am
+# threshold.performance$precipm.adj <- threshold.performance$precipm + 0 * threshold.performance$after.9.am
 
 pdf('../figures/threshold.identification.pdf', width = 16, height = 9)
 print(p3)
@@ -61,6 +64,11 @@ dev.off()
 
 png('../figures/threshold.identification.png', width = 1600, height = 900)
 print(p3)
+dev.off()
+
+# This one's awesome!
+png('../figures/threshold.identification-after.9.am.png', width = 1600, height = 900)
+print(p5)
 dev.off()
 
 png('../figures/threshold.performance.png', width = 1600, height = 900)
