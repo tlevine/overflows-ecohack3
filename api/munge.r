@@ -52,6 +52,8 @@ p3 <- ggplot(overflow) + aes(x = precipm, fill = overflow) +
 
 p4 <- ggplot(threshold.performance) + aes(x = threshold, y = hours, group = result) + geom_line()
 
+# Change '0' to something else based on that other model I ran
+threshold.performance$precipm.adj <- threshold.performance$precipm + 0 * threshold.performance$after.9.am
 
 pdf('../figures/threshold.identification.pdf', width = 16, height = 9)
 print(p3)
