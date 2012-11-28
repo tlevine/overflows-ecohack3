@@ -23,7 +23,7 @@ training.cutoff <- round(nrow(overflow) * 3 / 4)
 i <- sample(nrow(overflow))
 overflow.training <- overflow[i[1:(training.cutoff - 1)],]
 overflow.test <- overflow[i[training.cutoff:nrow(overflow)],]
-model.training <- glm(overflow ~ after.9.am * precipm, data = overflow.training, family = binomial)
+model.training <- glm(overflow ~ after.9.am * precipi, data = overflow.training, family = binomial)
 
 # When the Y value is zero, the likelihoods of overflowing and of not
 # overflowing are the same.
@@ -32,8 +32,12 @@ table(overflow.test$overflow, (predict(model.training, overflow.test) > 0))
 print('The model is decent.')
 
 # What's a good threshold?
-print('This is a good threshold for precipitation rate. Pay attention to the units.')
-print(- (coef(model.training)[1] + coef(model.training)[2]) / coef(model.training)[4])
+print('This is a good threshold for precipitation rate before 9 am. Pay attention to the units.')
+print(- (coef(model)[1] / coef(model)[3]))
+
+print('This is a good threshold for precipitation rate after 9 am. Pay attention to the units.')
+print(- (coef(model)[1] + coef(model)[2]) / coef(model)[4])
+
 table(overflow$precipi > 0.2, overflow$overflow, dnn = c('Precip over threshold', 'Sewer overflow'))
 
 thresholds <- (1:100)/10
@@ -135,3 +139,10 @@ p8 <- ggplot(overflow.for.graph) + aes(x = precip.factor, y = value, group = Sce
   scale_x_continuous('Precipitation rate (inches)', breaks = (0:20)/10) +
   scale_y_continuous('Number of occurrences (hours)') +
   labs(title = 'Newtown Creek precipitation rates and severflows by hour during New York City\'s top 10 storms of 2011')
+
+
+
+png('figures/area.png', width = 1600, height = 900)
+print(p8)
+# text(2, 0.1, 'Note the lack of overflow during these early-morning hours of high precipitation (the blue band).')
+dev.off()
