@@ -87,3 +87,13 @@ dev.off()
 png('figures/threshold.performance.png', width = 1600, height = 900)
 print(p4)
 dev.off()
+
+overflow.sorted <- overflow[order(overflow$overflow),]
+stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am, method='stack', pch = 22, bg = overflow.sorted$overflow + 1, vertical = T)
+stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am + overflow.sorted$overflow,
+  method='stack', pch = 22, bg = 1, vertical = T,
+  main = 'Sewer overflows in relation to time of day and precipitation rate',
+  ylab = 'Precipitation rate (inches)',
+  xlab = '', axes = F)
+axis(2)
+axis(1, at = 1:4, labels = c('Before 9 am, no overflow', 'After 9 am, no overflow', 'Before 9 am, overflow', 'After 9 am, overflow'))
