@@ -132,5 +132,6 @@ overflow.for.graph$precip.factor <- as.numeric(as.character(overflow.for.graph$p
 
 p8 <- ggplot(overflow.for.graph) + aes(x = precip.factor, y = value, group = Scenario, fill = Scenario) +
   geom_area(position = 'stack') +
-  scale_x_continuous('Precipitation rate (inches)') +
-  scale_y_continuous('Number of occurrences (hours)')
+  scale_x_continuous('Precipitation rate (inches)', breaks = (0:20)/10) +
+  scale_y_continuous('Number of occurrences (hours)') +
+  labs(title = 'Newtown Creek precipitation rates and severflows by hour during New York City\'s top 10 storms of 2011')
