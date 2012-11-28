@@ -1,0 +1,7 @@
+# This has two colors.
+overflow <- read.csv('overflow.csv', stringsAsFactors = F)
+stripchart(overflow$precipi ~ overflow$after.9.am, method='stack', pch = 22, bg = overflow$overflow + 1, vertical = T, col = 0)
+
+# This has one color
+overflow.sorted <- overflow[order(overflow$overflow),]
+stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am, method='stack', pch = 22, bg = overflow.sorted$overflow + 1, vertical = T, col = 0)

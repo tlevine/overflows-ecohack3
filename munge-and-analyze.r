@@ -18,6 +18,7 @@ model <- glm(overflow ~ after.9.am * precipm, data = overflow, family = binomial
 summary(model)
 print('This model suggests that overflows only only occur after 9 am.')
 
+set.seed(234234)
 training.cutoff <- round(nrow(overflow) * 3 / 4)
 i <- sample(nrow(overflow))
 overflow.training <- overflow[i[1:(training.cutoff - 1)],]
@@ -89,7 +90,8 @@ print(p4)
 dev.off()
 
 overflow.sorted <- overflow[order(overflow$overflow),]
-stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am, method='stack', pch = 22, bg = overflow.sorted$overflow + 1, vertical = T)
+stripchart(overflow$precipi ~ overflow$after.9.am, method='stack', pch = 22, bg = overflow$overflow + 1, vertical = T, col = 0)
+stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am, method='stack', pch = 22, bg = overflow.sorted$overflow + 1, vertical = T, col = 0)
 stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am + overflow.sorted$overflow,
   method='stack', pch = 22, bg = 1, vertical = T,
   main = 'Sewer overflows in relation to time of day and precipitation rate',
