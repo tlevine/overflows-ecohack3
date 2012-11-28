@@ -18,8 +18,21 @@ model <- glm(overflow ~ after.9.am * precipm, data = overflow, family = binomial
 summary(model)
 print('This model suggests that overflows only only occur after 9 am.')
 
+training.cutoff <- round(nrow(overflow) * 3 / 4)
+i <- sample(nrow(overflow))
+overflow.training <- overflow[i[1:(training.cutoff - 1)],]
+overflow.test <- overflow[i[training.cutoff:nrow(overflow)],]
+model.training <- glm(overflow ~ after.9.am * precipm, data = overflow.training, family = binomial)
+
+# When the Y value is zero, the likelihoods of overflowing and of not
+# overflowing are the same.
+table(overflow.test$overflow, round(predict(model.training, overflow.test, type = 'response'))) 
+table(overflow.test$overflow, (predict(model.training, overflow.test) > 0))
+print('The model is decent.')
 
 # What's a good threshold?
+print('This is a good threshold for precipitation rate. Pay attention to the units.')
+print(- (coef(model.training)[1] + coef(model.training)[2]) / coef(model.training)[4])
 table(overflow$precipi > 0.2, overflow$overflow, dnn = c('Precip over threshold', 'Sewer overflow'))
 
 thresholds <- (1:100)/10
