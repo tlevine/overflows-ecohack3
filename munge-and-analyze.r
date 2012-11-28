@@ -99,3 +99,18 @@ stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am + overflow.sorte
   xlab = '', axes = F)
 axis(2)
 axis(1, at = 1:4, labels = c('Before 9 am, no overflow', 'After 9 am, no overflow', 'Before 9 am, overflow', 'After 9 am, overflow'))
+
+
+
+library(reshape2)
+overflow$precip.factor <- factor(round(overflow$precipi, 1))
+overflow.for.graph <- melt(ddply(na.omit(overflow), 'precip.factor', function(df) {
+  data.frame(
+    not.overflow.before = sum(!df$overflow & !df$after.9.am),
+    overflow.before = sum(df$overflow & !df$after.9.am),
+    not.overflow.after = sum(!df$overflow & df$after.9.am),
+    overflow.after = sum(df$overflow & df$after.9.am)
+  )
+}), 'precip.factor')
+p8 <- ggplot(overflow.for.graph) + aes(x = precip.factor, y = value, group = variable, fill = variable) + geom_area()
+
