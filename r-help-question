@@ -1,7 +1,15 @@
 # This has two colors.
 overflow <- read.csv('overflow.csv', stringsAsFactors = F)
+png('original.png')
 stripchart(overflow$precipi ~ overflow$after.9.am, method='stack', pch = 22, bg = overflow$overflow + 1, vertical = T, col = 0)
+dev.off()
 
-# This has one color
+# I wanted continuous bands of color, so I sorted the data frame.
+
+# But after sorting, it only had one color.
 overflow.sorted <- overflow[order(overflow$overflow),]
+png('sorted.png')
 stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am, method='stack', pch = 22, bg = overflow.sorted$overflow + 1, vertical = T, col = 0)
+dev.off()
+
+# What's wrong?
