@@ -72,6 +72,7 @@ p5 <- ggplot(subset(overflow, after.9.am)) + aes(x = precipm, fill = overflow) +
 # Change '0' to something else based on that other model I ran
 # threshold.performance$precipm.adj <- threshold.performance$precipm + 0 * threshold.performance$after.9.am
 
+go <- function(){
 pdf('figures/threshold.identification.pdf', width = 16, height = 9)
 print(p3)
 dev.off()
@@ -99,18 +100,37 @@ stripchart(overflow.sorted$precipi ~ overflow.sorted$after.9.am + overflow.sorte
   xlab = '', axes = F)
 axis(2)
 axis(1, at = 1:4, labels = c('Before 9 am, no overflow', 'After 9 am, no overflow', 'Before 9 am, overflow', 'After 9 am, overflow'))
-
+}
 
 
 library(reshape2)
 overflow$precip.factor <- factor(round(overflow$precipi, 1))
 overflow.for.graph <- melt(ddply(na.omit(overflow), 'precip.factor', function(df) {
   data.frame(
-    not.overflow.before = sum(!df$overflow & !df$after.9.am),
+    no.overflow.before = sum(!df$overflow & !df$after.9.am),
     overflow.before = sum(df$overflow & !df$after.9.am),
-    not.overflow.after = sum(!df$overflow & df$after.9.am),
+    no.overflow.after = sum(!df$overflow & df$after.9.am),
     overflow.after = sum(df$overflow & df$after.9.am)
   )
 }), 'precip.factor')
-p8 <- ggplot(overflow.for.graph) + aes(x = precip.factor, y = value, group = variable, fill = variable) + geom_area()
+levels(overflow.for.graph$variable) <- c('Before 9 am, no overflow', 'Before 9 am, overflow', 'After 9 am, no overflow', 'After 9 am, overflow')
+colnames(overflow.for.graph)[2] <- 'Scenario'
+ordering <- c(
+  'Before 9 am, overflow',
+  'After 9 am, overflow',
+  'Before 9 am, no overflow',
+  'After 9 am, no overflow'
+)
 
+# Why doesn't this work for geom_area ????
+overflow.for.graph$Scenario <- factor(overflow.for.graph$Scenario, levels = ordering)
+# Oh, maybe it's the data frame ordering
+overflow.for.graph <- overflow.for.graph[order(overflow.for.graph$Scenario),]
+# Ah, yes! That did it.
+
+overflow.for.graph$precip.factor <- as.numeric(as.character(overflow.for.graph$precip.factor))
+
+p8 <- ggplot(overflow.for.graph) + aes(x = precip.factor, y = value, group = Scenario, fill = Scenario) +
+  geom_area(position = 'stack') +
+  scale_x_continuous('Precipitation rate (inches)') +
+  scale_y_continuous('Number of occurrences (hours)')
