@@ -3,7 +3,7 @@
 library(ggplot2)
 library(plyr)
 
-o <- read.csv('overflow_dates.csv')
+o <- read.csv('api/overflow_dates.csv')
 o$datetime <- strptime(o$start_date, format = '%m/%d/%Y') + 3600 * o$hour
 o$hour <- NULL
 o$start_date <- NULL
@@ -11,7 +11,7 @@ o$after.9.am <- as.numeric(strftime(o$datetime, '%H')) > 9
 o$overflow <- o$overflow == 'yes'
 
 
-precip <- read.csv('../munge-tom/precip.csv')
+precip <- read.csv('munge-tom/precip.csv')
 overflow <- join(o, precip)
 
 model <- glm(overflow ~ after.9.am * precipm, data = overflow, family = binomial)
@@ -58,19 +58,19 @@ p5 <- ggplot(subset(overflow, after.9.am)) + aes(x = precipm, fill = overflow) +
 # Change '0' to something else based on that other model I ran
 # threshold.performance$precipm.adj <- threshold.performance$precipm + 0 * threshold.performance$after.9.am
 
-pdf('../figures/threshold.identification.pdf', width = 16, height = 9)
+pdf('figures/threshold.identification.pdf', width = 16, height = 9)
 print(p3)
 dev.off()
 
-png('../figures/threshold.identification.png', width = 1600, height = 900)
+png('figures/threshold.identification.png', width = 1600, height = 900)
 print(p3)
 dev.off()
 
 # This one's awesome!
-png('../figures/threshold.identification-after.9.am.png', width = 1600, height = 900)
+png('figures/threshold.identification-after.9.am.png', width = 1600, height = 900)
 print(p5)
 dev.off()
 
-png('../figures/threshold.performance.png', width = 1600, height = 900)
+png('figures/threshold.performance.png', width = 1600, height = 900)
 print(p4)
 dev.off()
