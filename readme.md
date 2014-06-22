@@ -32,7 +32,7 @@ of data around the storm. For 60-hour widows, we only used the first 48-hours.
 This results in a total of 7720 observation-hours, with one observation per
 hour.
 
-![Sewer activity plot from December 7, 2012](2012-12-07.jpg)
+![Sewer activity plot from December 7, 2012](figures/2012-12-07.jpg)
 
 ### Rainfall statistic
 We collected rainfall statistics from Weather Underground. We chose this
@@ -48,7 +48,7 @@ an NC throttle start (solid diamond) and an NC throttle end (empty diamond),
 inclusive. For example, the two darkened bands on this plot, from hours t1
 to t2, indicate overflow periods.
 
-![Sewer activity plot from December 7, 2012 with shaded regions representing overflow periods as explained in the above paragraph](2012-12-07-annotated.jpg)
+![Sewer activity plot from December 7, 2012 with shaded regions representing overflow periods as explained in the above paragraph](figures/2012-12-07-annotated.jpg)
 
 The MPS throttle start (solid circle) and end (empty circle) apparently
 indicates overflows coming from the Manhattan pump station, which gets sent
